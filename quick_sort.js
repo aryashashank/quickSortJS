@@ -31,42 +31,44 @@ var objects = [
 {'x': 9, 'y': 'pnsgf'}
 ];
 
-function partition(start, end){
-	var pivot = numbers[end];
+function partition(list, start, end){
+	var pivot = list[end];
 	var pIndex = start;
 	for(var i = start ; i< end; i++){
-		if(numbers[i]<=pivot){
-		swap(i, pIndex);
+		if(list[i]<=pivot){
+		swap(list, i, pIndex);
 		pIndex++;
 		}
 	}
-	swap(pIndex, end);
+	swap(list, pIndex, end);
 	return pIndex;
 }
 
-function quickSort (start, end) {
+function quickSort (list, start, end) {
 	var pIndex;
 	if(start<end){
-	
-		pIndex = partition(start, end);
-		console.log(numbers);
-		quickSort(start , pIndex-1);
-		quickSort( pIndex+1 , end);
+		console.log(list);	
+		pIndex = partition(list, start, end);
+		console.log(list);
+		list = quickSort(list, start , pIndex-1);
+		console.log(list);
+		list = quickSort(list, pIndex+1 , end);
+		console.log(list);
 	}
-	return numbers;
+	return list;
 }
 
-function swap(startIndex, endIndex){
-	var temp = numbers[startIndex];
-	numbers[startIndex] = numbers[endIndex];
-	numbers[endIndex] = temp;
-
+function swap(list, startIndex, endIndex){
+	var temp = list[startIndex];
+	list[startIndex] = list[endIndex];
+	list[endIndex] = temp;
 }
 
 
-quickSort (0, numbers.length-1);
+function sort(list){
+	return quickSort(list, 0, list.length-1);
+}
 
 
 
-
-result.innerHTML = numbers; 
+result.innerHTML = sort(strings);
