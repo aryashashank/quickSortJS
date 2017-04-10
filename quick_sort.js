@@ -1,4 +1,6 @@
- var result = document.getElementById("result");
+
+// To see output open console
+var result = document.getElementById("result");
 
 
 
@@ -31,6 +33,18 @@ var objects = [
 {'x': 9, 'y': 'pnsgf'}
 ];
 
+function partitionForObjects(list, start, end, par){
+	var pivot = list[end][par];
+	var pIndex = start;
+		for(var i = start ; i< end; i++){
+		if(list[i][par]<=pivot){
+		swap(list, i, pIndex);
+		pIndex++;
+		}
+	}
+	swap(list, pIndex, end);
+	return pIndex;
+}
 function partition(list, start, end){
 	var pivot = list[end];
 	var pIndex = start;
@@ -44,15 +58,23 @@ function partition(list, start, end){
 	return pIndex;
 }
 
-function quickSort (list, start, end) {
+function quickSort (list, start, end, par) {
 	var pIndex;
 	if(start<end){
-		pIndex = partition(list, start, end);
-		quickSort(list, start , pIndex-1);
-		quickSort(list, pIndex+1 , end);
+    if(par!=null){
+		  pIndex = partitionForObjects(list, start, end, par);
+		  quickSort(list, start , pIndex-1, par);
+		  quickSort(list, pIndex+1 , end, par);
+    }
+    else{
+      pIndex = partition(list, start, end, null);
+		  quickSort(list, start , pIndex-1, null);
+		  quickSort(list, pIndex+1 , end, null);
+    }      
 	}
 	return list;
 }
+
 
 function swap(list, startIndex, endIndex){
 	var temp = list[startIndex];
@@ -61,10 +83,13 @@ function swap(list, startIndex, endIndex){
 }
 
 
-function sort(list){
-	return quickSort(list, 0, list.length-1);
+function sort(list, par){
+ 
+	return quickSort(list, 0, list.length-1, par);
 }
 
-
-
-result.innerHTML = sort(numbers);
+// To input array, keep second argument as null, to input objectm keep second argument as the name of parameter that you want to sort by.
+// Example:- 
+var x = sort(objects, 'y');
+console.log(x);
+result.innerHTML = x;
