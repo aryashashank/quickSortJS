@@ -47,13 +47,9 @@ function partition(list, start, end){
 function quickSort (list, start, end) {
 	var pIndex;
 	if(start<end){
-		console.log(list);	
 		pIndex = partition(list, start, end);
-		console.log(list);
-		list = quickSort(list, start , pIndex-1);
-		console.log(list);
-		list = quickSort(list, pIndex+1 , end);
-		console.log(list);
+		quickSort(list, start , pIndex-1);
+		quickSort(list, pIndex+1 , end);
 	}
 	return list;
 }
@@ -71,4 +67,4 @@ function sort(list){
 
 
 
-result.innerHTML = sort(strings);
+result.innerHTML = sort(numbers);
