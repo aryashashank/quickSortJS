@@ -1,94 +1,134 @@
-
 // To see output open console
-var result = document.getElementById("result");
-
-
 
 var numbers = [13, 99, 69, 73, 16, 97, 0, 42, 14, 27];
 
-
 var strings = [
-'bsraq',
-'haysk',
-'vlnbb',
-'suxdq',
-'ljpgw',
-'ucwph',
-'jwieu',
-'wdovf',
-'ijapc',
-'jvixx'
+  'bsraq',
+  'haysk',
+  'vlnbb',
+  'suxdq',
+  'ljpgw',
+  'ucwph',
+  'jwieu',
+  'wdovf',
+  'ijapc',
+  'jvixx'
 ];
 
-var objects = [
-{'x': 3, 'y': 'xpggm'},
-{'x': 4, 'y': 'qlqip'},
-{'x': 6, 'y': 'xvlrt'},
-{'x': 7, 'y': 'fkdbd'},
-{'x': 0, 'y': 'rfvvc'},
-{'x': 1, 'y': 'scsfd'},
-{'x': 8, 'y': 'wrcdm'},
-{'x': 5, 'y': 'vuedf'},
-{'x': 2, 'y': 'wtstr'},
-{'x': 9, 'y': 'pnsgf'}
-];
+var objects = [{
+  'x': 3,
+  'y': 'xpggm'
+}, {
+  'x': 4,
+  'y': 'qlqip'
+}, {
+  'x': 6,
+  'y': 'xvlrt'
+}, {
+  'x': 7,
+  'y': 'fkdbd'
+}, {
+  'x': 0,
+  'y': 'rfvvc'
+}, {
+  'x': 1,
+  'y': 'scsfd'
+}, {
+  'x': 8,
+  'y': 'wrcdm'
+}, {
+  'x': 5,
+  'y': 'vuedf'
+}, {
+  'x': 2,
+  'y': 'wtstr'
+}, {
+  'x': 9,
+  'y': 'pnsgf'
+}];
 
-function partitionForObjects(list, start, end, par){
-	var pivot = list[end][par];
-	var pIndex = start;
-		for(var i = start ; i< end; i++){
-		if(list[i][par]<=pivot){
-		swap(list, i, pIndex);
-		pIndex++;
-		}
-	}
-	swap(list, pIndex, end);
-	return pIndex;
-}
-function partition(list, start, end){
-	var pivot = list[end];
-	var pIndex = start;
-	for(var i = start ; i< end; i++){
-		if(list[i]<=pivot){
-		swap(list, i, pIndex);
-		pIndex++;
-		}
-	}
-	swap(list, pIndex, end);
-	return pIndex;
-}
+var paths = [{
+  x: 5,
+  y: 3
+}, {
+  x: 30,
+  y: 0
+}, {
+  x: 10,
+  y: 10
+}, {
+  x: 20,
+  y: 0
+}, {
+  x: 3,
+  y: 1
+}, {
+  x: 7,
+  y: 22
+}, {
+  x: 6,
+  y: 87
+}, {
+  x: -5,
+  y: -5
+}];
 
-function quickSort (list, start, end, par) {
-	var pIndex;
-	if(start<end){
-    if(par!=null){
-		  pIndex = partitionForObjects(list, start, end, par);
-		  quickSort(list, start , pIndex-1, par);
-		  quickSort(list, pIndex+1 , end, par);
+//Partition- creates a partition and divides the array into two parts, less than pivot and more than pivot. can partition on the basis of individual parameter of object or distance.
+// List should be in [{x:1,y:1}] form for distance function
+function partition(list, start, end, par) {
+  var pivot;
+   var keys = Object.keys(list[start]);
+  if(par === 'dist'){
+    pivot = Math.pow(list[end][keys[0]], 2) + Math.pow(list[end][keys[1]], 2);
+  }
+  else{
+  pivot = par === null ? list[end] :  list[end][par];
+  }
+  var pIndex = start;
+
+  for (var i = start; i < end; i++) {
+    var curVal = par === null ? list[i] : par === "dist" ? Math.pow(list[i][keys[0]], 2)+Math.pow(list[i][keys[1]], 2) : list[i][par];
+    if (curVal <= pivot) {
+      swap(list, i, pIndex);
+      pIndex++;
     }
-    else{
-      pIndex = partition(list, start, end, null);
-		  quickSort(list, start , pIndex-1, null);
-		  quickSort(list, pIndex+1 , end, null);
-    }      
-	}
-	return list;
+  }
+  swap(list, pIndex, end);
+  return pIndex;
+}
+//sorts a list
+function quickSort(list, start, end, par) {
+  var pIndex;
+  if (start < end) {
+    pIndex = partition(list, start, end, par);
+    quickSort(list, start, pIndex - 1, par);
+    quickSort(list, pIndex + 1, end, par);
+
+  }
+  return list;
 }
 
-
-function swap(list, startIndex, endIndex){
-	var temp = list[startIndex];
-	list[startIndex] = list[endIndex];
-	list[endIndex] = temp;
+function swap(list, startIndex, endIndex) {
+  var temp = list[startIndex];
+  list[startIndex] = list[endIndex];
+  list[endIndex] = temp;
 }
 
+function sort(list, par) {
 
-function sort(list, par){
- 
-	return quickSort(list, 0, list.length-1, par);
+  return quickSort(list, 0, list.length - 1, par);
 }
 
 // To input array, keep second argument as null, to input objectm keep second argument as the name of parameter that you want to sort by.
 // Example:- 
-var sorted = sort(objects, 'x');
-result.innerHTML = JSON.stringify(sorted,null,4);
+// If arguement is 'dist' then it takes x and y elements of list for sorting to distance.
+
+document.getElementById("resultArray").innerHTML = JSON.stringify(sort(numbers, null), null, 4);
+document.getElementById("resultString").innerHTML = JSON.stringify(sort(strings, null), null, 4);
+document.getElementById("resultObjx").innerHTML = JSON.stringify(sort(objects, 'x'), null, 4);
+document.getElementById("resultObjy").innerHTML = JSON.stringify(sort(objects, 'y'), null, 4);
+document.getElementById("resultObj2x").innerHTML = JSON.stringify(sort(paths, 'x'), null, 4);
+document.getElementById("resultObj2y").innerHTML = JSON.stringify(sort(paths, 'y'), null, 4);
+document.getElementById("resultObj2dist").innerHTML = JSON.stringify(sort(paths, 'dist'), null, 4);
+
+
