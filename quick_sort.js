@@ -90,6 +90,5 @@ function sort(list, par){
 
 // To input array, keep second argument as null, to input objectm keep second argument as the name of parameter that you want to sort by.
 // Example:- 
-var x = sort(objects, 'y');
-console.log(x);
-result.innerHTML = x;
+var sorted = sort(objects, 'x');
+result.innerHTML = JSON.stringify(sorted,null,4);
