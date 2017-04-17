@@ -73,7 +73,8 @@ var paths = [{
   y: -5
 }];
 
-//Partition- creates a partition and divides the array into two parts, less than pivot and more than pivot. can partition on the basis of individual parameter of object or distance.
+//Partition- creates a partition and divides the array into two parts,
+ // less than pivot and more than pivot. can partition on the basis of individual parameter of object or distance.
 // List should be in [{x:1,y:1}] form for distance function
 function partition(list, start, end, par) {
   var pivot;
@@ -123,12 +124,42 @@ function sort(list, par) {
 // Example:- 
 // If arguement is 'dist' then it takes x and y elements of list for sorting to distance.
 
-document.getElementById("resultArray").innerHTML = JSON.stringify(sort(numbers, null), null, 4);
-document.getElementById("resultString").innerHTML = JSON.stringify(sort(strings, null), null, 4);
-document.getElementById("resultObjx").innerHTML = JSON.stringify(sort(objects, 'x'), null, 4);
-document.getElementById("resultObjy").innerHTML = JSON.stringify(sort(objects, 'y'), null, 4);
-document.getElementById("resultObj2x").innerHTML = JSON.stringify(sort(paths, 'x'), null, 4);
-document.getElementById("resultObj2y").innerHTML = JSON.stringify(sort(paths, 'y'), null, 4);
-document.getElementById("resultObj2dist").innerHTML = JSON.stringify(sort(paths, 'dist'), null, 4);
+document.getElementById("resultArray").innerHTML = JSON.stringify(sort(numbers.slice(0), null), null, 4);
+document.getElementById("resultString").innerHTML = JSON.stringify(sort(strings.slice(0), null), null, 4);
+document.getElementById("resultObjx").innerHTML = JSON.stringify(sort(objects.slice(0), 'x'), null, 4);
+document.getElementById("resultObjy").innerHTML = JSON.stringify(sort(objects.slice(0), 'y'), null, 4);
+document.getElementById("resultObj2x").innerHTML = JSON.stringify(sort(paths.slice(0), 'x'), null, 4);
+document.getElementById("resultObj2y").innerHTML = JSON.stringify(sort(paths.slice(0), 'y'), null, 4);
+document.getElementById("resultObj2dist").innerHTML = JSON.stringify(sort(paths.slice(0), 'dist'), null, 4);
 
 
+
+
+// Tests
+
+//Partition
+
+function testFull(list,answer, par){
+var result = partition(list, 0, list.length-1, par);
+
+return result == answer;
+}
+
+function testPart(list,start,end,answer, par){
+	
+var result = partition(list, start, end, par);
+return result == answer;
+}
+
+console.log(testFull([1,2,3,4,5], 4, null));
+console.log(testFull([5,4,3,2,1], 0, null));
+console.log(testFull(objects, 9, 'x'));
+console.log(testFull(paths, 0, 'y'));
+
+
+console.log(testPart([1,2,3,4,5], 0 , 4, 4, null));
+console.log(testPart([5,4,3,2,1] , 0 , 3 , 0, null));
+console.log(testPart(objects, 3, 9 ,  9, 'x'));
+console.log(testPart(paths, 4, 5 , 5, 'y'));
+
+// 
