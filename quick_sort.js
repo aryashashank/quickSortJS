@@ -76,34 +76,28 @@ var paths = [{
 //Partition- creates a partition and divides the array into two parts,
  // less than pivot and more than pivot. can partition on the basis of individual parameter of object or distance.
 // List should be in [{x:1,y:1}] form for distance function
-function partition(list, start, end, par) {
+function partition(list, start, end, compareFunction) {
   var pivot;
-   var keys = Object.keys(list[start]);
-  if(par === 'dist'){
-    pivot = Math.pow(list[end][keys[0]], 2) + Math.pow(list[end][keys[1]], 2);
-  }
-  else{
-  pivot = par === null ? list[end] :  list[end][par];
-  }
+  pivot = list[end];
   var pIndex = start;
-
   for (var i = start; i < end; i++) {
-    var curVal = par === null ? list[i] : par === "dist" ? Math.pow(list[i][keys[0]], 2)+Math.pow(list[i][keys[1]], 2) : list[i][par];
-    if (curVal <= pivot) {
+    var curVal = list[i];
+    if (compareFunction(curVal, pivot) < 0) {
       swap(list, i, pIndex);
       pIndex++;
     }
   }
   swap(list, pIndex, end);
+  
   return pIndex;
 }
 //sorts a list
-function quickSort(list, start, end, par) {
+function quickSort(list, start, end, compareFunction) {
   var pIndex;
   if (start < end) {
-    pIndex = partition(list, start, end, par);
-    quickSort(list, start, pIndex - 1, par);
-    quickSort(list, pIndex + 1, end, par);
+    pIndex = partition(list, start, end, compareFunction);
+    quickSort(list, start, pIndex - 1,compareFunction);
+    quickSort(list, pIndex + 1, end, compareFunction);
 
   }
   return list;
@@ -115,51 +109,46 @@ function swap(list, startIndex, endIndex) {
   list[endIndex] = temp;
 }
 
-function sort(list, par) {
+function sort(list, compareFunction) {
 
-  return quickSort(list, 0, list.length - 1, par);
+if (compareFunction == undefined) {
+    var compareFunction = "";
+    if (list.every(function(element) {
+        return typeof(element) === "string";
+      })) {
+      compareFunction = function(a, b) {
+        if (a > b) {
+          return 1;
+        } else if (a < b) {
+          return -1;
+        }
+      }
+
+    } else if (list.every(function(element) {
+        return typeof(element) === "number";
+      })) {
+      compareFunction = function(a, b) {
+        return a - b;
+      }
+    } else {
+      return list;
+    }
+  }
+  return quickSort(list, 0, list.length - 1,compareFunction);
 }
+
 
 // To input array, keep second argument as null, to input objectm keep second argument as the name of parameter that you want to sort by.
 // Example:- 
 // If arguement is 'dist' then it takes x and y elements of list for sorting to distance.
 
-document.getElementById("resultArray").innerHTML = JSON.stringify(sort(numbers.slice(0), null), null, 4);
-document.getElementById("resultString").innerHTML = JSON.stringify(sort(strings.slice(0), null), null, 4);
-document.getElementById("resultObjx").innerHTML = JSON.stringify(sort(objects.slice(0), 'x'), null, 4);
-document.getElementById("resultObjy").innerHTML = JSON.stringify(sort(objects.slice(0), 'y'), null, 4);
-document.getElementById("resultObj2x").innerHTML = JSON.stringify(sort(paths.slice(0), 'x'), null, 4);
-document.getElementById("resultObj2y").innerHTML = JSON.stringify(sort(paths.slice(0), 'y'), null, 4);
-document.getElementById("resultObj2dist").innerHTML = JSON.stringify(sort(paths.slice(0), 'dist'), null, 4);
 
+document.getElementById("resultArray").innerHTML = JSON.stringify(sort(numbers.slice(0)));
+document.getElementById("resultString").innerHTML = JSON.stringify(sort(strings.slice(0)));
+document.getElementById("resultObjx").innerHTML = JSON.stringify(sort(objects.slice(0), function(a, b){return a.x-b.x;}));
+document.getElementById("resultObjy").innerHTML = JSON.stringify(sort(objects.slice(0), function(a, b){if(a.y>= b.y){return 1;} return -1;}));
+document.getElementById("resultObj2x").innerHTML = JSON.stringify(sort(paths.slice(0), function(a, b){return a.x-b.x;}));
+document.getElementById("resultObj2y").innerHTML = JSON.stringify(sort(paths.slice(0), function(a, b){return a.y-b.y;}));
+document.getElementById("resultObj2dist").innerHTML = JSON.stringify(sort(paths.slice(0), function(a, b){return (((a.x*a.x)+(a.y*a.y))-((b.x*b.x)+b.y*b.y));}));
 
-
-
-// Tests
-
-//Partition
-
-function testFull(list,answer, par){
-var result = partition(list, 0, list.length-1, par);
-
-return result == answer;
-}
-
-function testPart(list,start,end,answer, par){
-	
-var result = partition(list, start, end, par);
-return result == answer;
-}
-
-console.log(testFull([1,2,3,4,5], 4, null));
-console.log(testFull([5,4,3,2,1], 0, null));
-console.log(testFull(objects, 9, 'x'));
-console.log(testFull(paths, 0, 'y'));
-
-
-console.log(testPart([1,2,3,4,5], 0 , 4, 4, null));
-console.log(testPart([5,4,3,2,1] , 0 , 3 , 0, null));
-console.log(testPart(objects, 3, 9 ,  9, 'x'));
-console.log(testPart(paths, 4, 5 , 5, 'y'));
-
-// 
+// partition(numbers, 0 , numbers.length-1);
