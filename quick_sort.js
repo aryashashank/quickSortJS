@@ -1,5 +1,3 @@
-// To see output open console
-
 var numbers = [13, 99, 69, 73, 16, 97, 0, 42, 14, 27];
 
 var strings = [
@@ -73,9 +71,6 @@ var paths = [{
   y: -5
 }];
 
-//Partition- creates a partition and divides the array into two parts,
- // less than pivot and more than pivot. can partition on the basis of individual parameter of object or distance.
-// List should be in [{x:1,y:1}] form for distance function
 function partition(list, start, end, compareFunction) {
   var pivot;
   pivot = list[end];
@@ -136,12 +131,6 @@ if (compareFunction == undefined) {
   }
   return quickSort(list, 0, list.length - 1,compareFunction);
 }
-
-
-// To input array, keep second argument as null, to input objectm keep second argument as the name of parameter that you want to sort by.
-// Example:- 
-// If arguement is 'dist' then it takes x and y elements of list for sorting to distance.
-
 
 document.getElementById("resultArray").innerHTML = JSON.stringify(sort(numbers.slice(0)));
 document.getElementById("resultString").innerHTML = JSON.stringify(sort(strings.slice(0)));
