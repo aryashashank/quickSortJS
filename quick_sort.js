@@ -150,5 +150,3 @@ document.getElementById("resultObjy").innerHTML = JSON.stringify(sort(objects.sl
 document.getElementById("resultObj2x").innerHTML = JSON.stringify(sort(paths.slice(0), function(a, b){return a.x-b.x;}));
 document.getElementById("resultObj2y").innerHTML = JSON.stringify(sort(paths.slice(0), function(a, b){return a.y-b.y;}));
 document.getElementById("resultObj2dist").innerHTML = JSON.stringify(sort(paths.slice(0), function(a, b){return (((a.x*a.x)+(a.y*a.y))-((b.x*b.x)+b.y*b.y));}));
-
-// partition(numbers, 0 , numbers.length-1);
